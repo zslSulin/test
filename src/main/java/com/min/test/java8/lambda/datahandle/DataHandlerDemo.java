@@ -2,6 +2,10 @@ package com.min.test.java8.lambda.datahandle;
 
 import org.junit.Test;
 
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -93,6 +97,7 @@ public class DataHandlerDemo {
         long millis1 = TimeUnit.NANOSECONDS.toMillis(t3 - t2);
         System.out.println(String.format("parallel sort took: %d ms", millis1));
 
+        //以下开始非lambda
         //Map
         Map<Integer, String> map = new HashMap<>();
 
@@ -118,5 +123,43 @@ public class DataHandlerDemo {
         map.get(3);
         System.out.println(map.get(3));
 
+        map.remove(3, "val3");
+        map.get(3);
+
+        map.remove(3, "val33");
+        map.get(3);
+
+        map.getOrDefault(42, "not found");
+
+        //map实例拼接
+        map.merge(9, "val9", (value, newValue) -> value.concat(newValue));
+        map.get(9);
+
+        map.merge(9, "concat", (value, newValue) -> value.concat(newValue));
+        map.get(9);
+
+        //时间api
+        //Clock
+        Clock clock = Clock.systemDefaultZone();
+        long millis2 = clock.millis();
+
+        Instant instant = clock.instant();
+        Date legacyDate = Date.from(instant);
+
+        //Timezones
+        System.out.println(ZoneId.getAvailableZoneIds());
+        ZoneId zone1 = ZoneId.of("Europe/Berlin");
+        ZoneId zone2 = ZoneId.of("Brazil/East");
+
+        System.out.println(zone1.getRules());
+        System.out.println(zone2.getRules());
+
+        //LocalTime
+        LocalTime now1 = LocalTime.now(zone1);
+        LocalTime now2 = LocalTime.now(zone2);
+
+        System.out.println(now1.isBefore(now2));
+
+        //.....
     }
 }
